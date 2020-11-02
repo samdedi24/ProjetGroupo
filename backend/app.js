@@ -1,26 +1,28 @@
-const express = require('express');
+const express = require('express')
+const path = require('path')
 const cors = require('cors')
 
-const app = express();
+const userRoutes = require('./routes/user')
+const postRoutes = require('./routes/post')
+
+const { sequelize } = require('./models/index')
+
+const app = express()
+
 app.use(cors())
 
-app.use((req, res, next) => {
-  console.log('Requête reçue !');
-  next();
-});
+app.use('/api/users', userRoutes);
+app.use('/api/post', postRoutes);
 
-app.use((req, res, next) => {
-  res.status(201);
-  next();
-});
+const dbTest = async function () {
+    try {
+      await sequelize.authenticate();
+      console.log('Connection has been established successfully.');
+    } catch (error) {
+      console.error('Unable to connect to the database:', error);
+    }
+  };
+  dbTest();
 
-app.use((req, res, next) => {
-  res.json({ message: 'Votre requête a bien été reçue !' });
-  next();
-});
-
-app.use((req, res, next) => {
-  console.log('Réponse envoyée avec succès !');
-});
 
 module.exports = app;
