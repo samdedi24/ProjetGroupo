@@ -1,5 +1,6 @@
 const express = require('express')
-const path = require('path')
+//const morgan = require('morgan')
+//const path = require('path')
 const cors = require('cors')
 
 const userRoutes = require('./routes/user')
@@ -9,7 +10,8 @@ const { sequelize } = require('./models/index')
 
 const app = express()
 
-app.use(cors())
+
+app.use(cors());
 
 app.use('/api/users', userRoutes);
 app.use('/api/post', postRoutes);
