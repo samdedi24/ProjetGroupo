@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
-const db = require("../models")
-const token = require("../middleware/token")
+const db = require("../models");
+const token = require("../middleware/token");
+const { Op } = require("sequelize");
 
 exports.signup = async (req, res) => {
     try {
@@ -17,7 +18,8 @@ exports.signup = async (req, res) => {
           email: req.body.email,
           username: req.body.username,
           password: hash,
-          isAdmin: false,
+          bio: req.body.bio,
+          isAdmin: 0,
         });
   
         const tokenObject = await token.issueJWT(newUser);
@@ -56,6 +58,22 @@ exports.login = async (req, res) => {
           });
         }
       }
+    } catch (error) {
+      return res.status(500).send({ error: "Erreur serveur" });
+    }
+  };
+
+  exports.getAllUsers = async (req, res) => {
+    try {
+      const users = await db.User.findAll({
+        attributes: ["username", "id", "bio", "email"],
+        where: {
+          id: {
+            [Op.ne]: 1,
+          },
+        },
+      });
+      res.status(200).send(users);
     } catch (error) {
       return res.status(500).send({ error: "Erreur serveur" });
     }
