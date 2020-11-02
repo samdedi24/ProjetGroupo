@@ -1,7 +1,8 @@
-const express = require('express')
-//const morgan = require('morgan')
-//const path = require('path')
-const cors = require('cors')
+const express = require('express');
+//const morgan = require('morgan');
+//const path = require('path');
+const cors = require('cors');
+require('dotenv').config();
 
 const userRoutes = require('./routes/user')
 const postRoutes = require('./routes/post')

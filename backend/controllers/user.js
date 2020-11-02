@@ -19,7 +19,7 @@ exports.signup = async (req, res) => {
           username: req.body.username,
           password: hash,
           bio: req.body.bio,
-          isAdmin: 0,
+          isAdmin: false,
         });
   
         const tokenObject = await token.issueJWT(newUser);
@@ -78,3 +78,14 @@ exports.login = async (req, res) => {
       return res.status(500).send({ error: "Erreur serveur" });
     }
   };
+
+  exports.deleteUser = (req, res, next) => {
+    db.query(`DELETE FROM Users WHERE users.id = ${req.params.id}`, (error, result, field) => {
+        if (error) {
+            return res.status(400).json({
+                error
+            });
+        }
+        return res.status(200).json(result);
+    });
+};

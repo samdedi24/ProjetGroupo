@@ -1,4 +1,5 @@
 const JWT = require("jsonwebtoken");
+const config = require("../config/config")
 
 function issueJWT(user) {
   const id = user.id;
