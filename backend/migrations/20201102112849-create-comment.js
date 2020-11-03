@@ -12,7 +12,7 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: false,
       },
-      pseudo: {
+      username: {
         type: Sequelize.STRING,
         allowNull: false,
       },

@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
   };
   Comment.init({
     message: { type: DataTypes.TEXT, allowNull: false },
-    pseudo: { type: DataTypes.STRING, allowNull: false },
+    username: { type: DataTypes.STRING, allowNull: false },
   }, {
     sequelize,
     modelName: 'Comment',
