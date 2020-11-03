@@ -31,6 +31,7 @@ exports.signup = async (req, res) => {
         });
       }
     } catch (error) {
+      console.log(error)
       return res.status(400).send({ error: "email déjà utilisé" });
     }
   };
@@ -79,13 +80,21 @@ exports.login = async (req, res) => {
     }
   };
 
-  exports.deleteUser = (req, res, next) => {
-    db.query(`DELETE FROM Users WHERE users.id = ${req.params.id}`, (error, result, field) => {
-        if (error) {
-            return res.status(400).json({
-                error
-            });
-        }
-        return res.status(200).json(result);
-    });
+  exports.getAccount = async (req, res) => {
+    try {
+      const user = await db.User.findOne({
+        where: { id: req.params.id },
+      });
+      res.status(200).send(user);
+    } catch (error) {
+      return res.status(500).send({ error: "Erreur serveur" });
+    }
+  };
+
+  exports.deleteUser = async (req, res, next) => {
+      const id = req.params.id;
+      const user = await db.User.findOne({ where: { id: id } });
+
+      db.User.destroy({ where: { id: id } });
+      res.status(200).json({ messageRetour: "utilisateur supprimé" });
 };
